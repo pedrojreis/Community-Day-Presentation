@@ -65,12 +65,24 @@
 .tpl-tech-sharing .side-note{font-size:calc(var(--u)*1.2);color:var(--text-2)}
 
 /* ---------- slide 3 ---------- */
-.tpl-tech-sharing .project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
-.tpl-tech-sharing .project-card{display:flex;flex-direction:column;gap:calc(var(--u)*.9)}
+.tpl-tech-sharing .project-grid{--qr:min(calc(var(--u)*13),25vh,13vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.tpl-tech-sharing .project-card{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:calc(var(--u)*.9)}
+/* Badge-gradient strip across the top of each card */
+.tpl-tech-sharing .project-card::before{content:"";position:absolute;inset:0 0 auto;height:calc(var(--u)*.3);background:var(--grad)}
 .tpl-tech-sharing .project-card>*{margin:0}
-.tpl-tech-sharing .project-card .tag{align-self:flex-start}
+.tpl-tech-sharing .project-meta{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*.8)}
+.tpl-tech-sharing .project-num{font-family:'JetBrains Mono',monospace;font-size:calc(var(--u)*1.05);font-weight:700;letter-spacing:.06em;color:var(--accent)}
 .tpl-tech-sharing .project-card p{font-size:calc(var(--u)*1.35);line-height:1.5;color:var(--text-2)}
-.tpl-tech-sharing .project-link{margin-top:auto;padding-top:calc(var(--u)*.4);font-family:'JetBrains Mono',monospace;font-size:calc(var(--u)*1);line-height:1.4;font-weight:600;color:var(--accent-2);overflow-wrap:anywhere}
+.tpl-tech-sharing .project-scan{margin-top:auto;padding-top:calc(var(--u)*.4);display:flex;flex-wrap:wrap;align-items:flex-end;gap:calc(var(--u)*.8) calc(var(--u)*1.2)}
+/* QR codes stay dark-on-white in every theme so phones can always read them */
+.tpl-tech-sharing .project-qr{display:block;flex:none;width:var(--qr);aspect-ratio:1;border-radius:calc(var(--u)*.7);overflow:hidden;background:#fff;box-shadow:0 calc(var(--u)*.4) calc(var(--u)*1.4) rgba(0,0,0,.35)}
+.tpl-tech-sharing .project-qr:focus-visible{outline:calc(var(--u)*.2) solid var(--accent);outline-offset:calc(var(--u)*.25)}
+.tpl-tech-sharing .project-qr img{display:block;width:100%;height:100%}
+.tpl-tech-sharing .scan-copy{display:flex;flex-direction:column;gap:calc(var(--u)*.45);min-width:0;padding-bottom:calc(var(--u)*.2)}
+.tpl-tech-sharing .scan-hint{font-family:'JetBrains Mono',monospace;font-size:calc(var(--u)*.85);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2)}
+.tpl-tech-sharing .project-author{--gh-mark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656'/%3E%3C/svg%3E");
+  display:inline-flex;align-items:center;gap:.45em;font-family:'JetBrains Mono',monospace;font-size:calc(var(--u)*1.1);font-weight:600;line-height:1.2;color:var(--text-1);overflow-wrap:anywhere}
+.tpl-tech-sharing .project-author::before{content:"";flex:none;width:1.1em;height:1.1em;background:currentColor;-webkit-mask:var(--gh-mark) center/contain no-repeat;mask:var(--gh-mark) center/contain no-repeat}
 .tpl-tech-sharing .open-source-note{padding:calc(var(--u)*1.2) calc(var(--u)*1.6);border:1px solid var(--border);border-left:calc(var(--u)*.22) solid var(--accent-2);border-radius:calc(var(--u)*.9);background:var(--surface);color:var(--text-2);font-size:calc(var(--u)*1.4);line-height:1.45}
 .tpl-tech-sharing .open-source-note strong{color:var(--text-1)}
 
@@ -79,7 +91,11 @@
 .tpl-tech-sharing .closing-badge{width:min(32vh,40vw)}
 .tpl-tech-sharing .closing .h1{font-size:calc(var(--u)*8)}
 .tpl-tech-sharing .closing-lede{font-size:calc(var(--u)*3);font-weight:600;line-height:1.2;color:var(--accent)}
-.tpl-tech-sharing .closing .tag-row{justify-content:center}
+
+/* ---------- 16:10 and squarer: slide 3 has less height to spare ---------- */
+@media (max-aspect-ratio:16/10){
+  .tpl-tech-sharing .project-grid{--qr:min(calc(var(--u)*11),22vh,12vw)}
+}
 
 /* ---------- portrait / near-square screens ---------- */
 @media (max-aspect-ratio:6/5){
@@ -87,4 +103,12 @@
   .tpl-tech-sharing .video-layout,.tpl-tech-sharing .project-grid,.tpl-tech-sharing .hero{grid-template-columns:minmax(0,1fr)}
   .tpl-tech-sharing .hero-badge{order:-1;width:min(36vw,22vh)}
   .tpl-tech-sharing .closing-badge{width:min(50vw,26vh)}
+  /* Slide 3 cards become compact rows: text on the left, QR on the right */
+  .tpl-tech-sharing .project-grid{--qr:min(22vw,13vh)}
+  .tpl-tech-sharing .project-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;column-gap:calc(var(--u)*1.6);row-gap:calc(var(--u)*.6)}
+  .tpl-tech-sharing .project-card>*{grid-column:1}
+  .tpl-tech-sharing .project-scan{display:contents}
+  .tpl-tech-sharing .project-qr{grid-column:2;grid-row:1/span 4;align-self:center}
+  .tpl-tech-sharing .scan-copy{grid-column:1;padding:0}
+  .tpl-tech-sharing .scan-hint{display:none}
 }
