@@ -1,0 +1,23 @@
+/* theme: home-assistant — Home Assistant dark mode, built from the official
+   design tokens: https://contributors.home-assistant.io/design/foundations/color/
+   Gradient ends on the lime of the OHF Community Day 2026 badge. */
+:root{
+  --bg:#141414;--bg-soft:#141414;        /* neutral-05 */
+  --surface:#202020;                     /* neutral-10 */
+  --surface-2:#363636;                   /* neutral-20 */
+  --border:rgba(243,243,243,.11);--border-strong:rgba(243,243,243,.22);
+  --text-1:#f3f3f3;                      /* neutral-95 */
+  --text-2:#cccccc;                      /* neutral-80 */
+  --text-3:#989898;                      /* neutral-60 */
+  --accent:#18bcf2;                      /* primary-50: the Home Assistant logo blue */
+  --accent-2:#5dc36f;                    /* green-70 */
+  --accent-3:#7bd4fb;                    /* primary-70 */
+  --accent-ink:#001721;                  /* primary-05, text on --accent */
+  --good:#5dc36f;--warn:#ff9342;--bad:#f3676c;
+  --grad:linear-gradient(120deg,#18bcf2,#5dc36f 60%,#b7d27a);
+  --grad-soft:linear-gradient(135deg,#202020,#363636);
+  --radius:12px;--radius-sm:8px;--radius-lg:20px;
+  --shadow:0 10px 30px rgba(0,0,0,.5);
+  --shadow-lg:0 24px 62px rgba(0,0,0,.65);
+  --font-sans:'Inter','Noto Sans SC',sans-serif;
+}
