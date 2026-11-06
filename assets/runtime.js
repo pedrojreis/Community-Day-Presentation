@@ -15,19 +15,46 @@
  *   Progress bar auto-managed
  */
 (function () {
-  'use strict';
+  "use strict";
 
-  const ANIMS = ['fade-up','fade-down','fade-left','fade-right','rise-in','drop-in',
-    'zoom-pop','blur-in','glitch-in','typewriter','neon-glow','shimmer-sweep',
-    'gradient-flow','stagger-list','counter-up','path-draw','parallax-tilt',
-    'card-flip-3d','cube-rotate-3d','page-turn-3d','perspective-zoom',
-    'marquee-scroll','kenburns','confetti-burst','spotlight','morph-shape','ripple-reveal'];
+  const ANIMS = [
+    "fade-up",
+    "fade-down",
+    "fade-left",
+    "fade-right",
+    "rise-in",
+    "drop-in",
+    "zoom-pop",
+    "blur-in",
+    "glitch-in",
+    "typewriter",
+    "neon-glow",
+    "shimmer-sweep",
+    "gradient-flow",
+    "stagger-list",
+    "counter-up",
+    "path-draw",
+    "parallax-tilt",
+    "card-flip-3d",
+    "cube-rotate-3d",
+    "page-turn-3d",
+    "perspective-zoom",
+    "marquee-scroll",
+    "kenburns",
+    "confetti-burst",
+    "spotlight",
+    "morph-shape",
+    "ripple-reveal",
+  ];
 
   /* Every class the runtime treats as speaker notes. base.css hides the same
    * set from the audience — if you add one here, add it there too. */
-  const NOTE_SEL = '.notes, aside.notes, .speaker-notes';
+  const NOTE_SEL = ".notes, aside.notes, .speaker-notes";
 
-  function ready(fn){ if(document.readyState!='loading')fn(); else document.addEventListener('DOMContentLoaded',fn);}
+  function ready(fn) {
+    if (document.readyState != "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
 
   /* ========== Parse URL for preview-only mode ==========
    * When loaded as iframe.src = "index.html?preview=3", runtime enters a
@@ -37,7 +64,7 @@
    * to display only a specific slide.
    */
   function getPreviewIdx() {
-    const m = /[?&]preview=(\d+)/.exec(location.search || '');
+    const m = /[?&]preview=(\d+)/.exec(location.search || "");
     return m ? parseInt(m[1], 10) - 1 : -1;
   }
 
@@ -51,28 +78,30 @@
    * <div class="deck" data-w="1080" data-h="1440"> (e.g. a 3:4 小红书 post).
    */
   function initCanvasFit(deck) {
-    if (document.body.getAttribute('data-fit') === 'fluid') return;
+    if (document.body.getAttribute("data-fit") === "fluid") return;
 
-    const w = parseInt(deck.getAttribute('data-w'), 10) || 1920;
-    const h = parseInt(deck.getAttribute('data-h'), 10) || 1080;
-    deck.style.setProperty('--deck-w', w + 'px');
-    deck.style.setProperty('--deck-h', h + 'px');
+    const w = parseInt(deck.getAttribute("data-w"), 10) || 1920;
+    const h = parseInt(deck.getAttribute("data-h"), 10) || 1080;
+    deck.style.setProperty("--deck-w", w + "px");
+    deck.style.setProperty("--deck-h", h + "px");
 
     function fit() {
       const scale = Math.min(window.innerWidth / w, window.innerHeight / h);
-      deck.style.setProperty('--deck-scale', String(scale));
+      deck.style.setProperty("--deck-scale", String(scale));
     }
     fit();
-    window.addEventListener('resize', fit);
-    if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+    window.addEventListener("resize", fit);
+    if (window.visualViewport)
+      window.visualViewport.addEventListener("resize", fit);
     /* Webfonts can land after first paint; re-fit once they do. */
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit).catch(function(){});
+    if (document.fonts && document.fonts.ready)
+      document.fonts.ready.then(fit).catch(function () {});
   }
 
   ready(function () {
-    const deck = document.querySelector('.deck');
+    const deck = document.querySelector(".deck");
     if (!deck) return;
-    const slides = Array.from(deck.querySelectorAll('.slide'));
+    const slides = Array.from(deck.querySelectorAll(".slide"));
     if (!slides.length) return;
 
     initCanvasFit(deck);
@@ -84,33 +113,36 @@
      * exactly where it is — base.css styles both paths identically, so a deck
      * can have a logo with runtime.js absent entirely.
      */
-    const logoEl = (function initLogo(){
-      const attr = (n) => document.body.getAttribute(n) || document.documentElement.getAttribute(n);
-      let el = deck.querySelector(':scope > .deck-logo');
+    const logoEl = (function initLogo() {
+      const attr = (n) =>
+        document.body.getAttribute(n) ||
+        document.documentElement.getAttribute(n);
+      let el = deck.querySelector(":scope > .deck-logo");
       if (!el) {
-        const src = attr('data-logo');
+        const src = attr("data-logo");
         if (!src) return null;
-        el = document.createElement('img');
-        el.className = 'deck-logo';
+        el = document.createElement("img");
+        el.className = "deck-logo";
         el.src = src;
-        el.alt = attr('data-logo-alt') || '';
+        el.alt = attr("data-logo-alt") || "";
         deck.appendChild(el);
       }
-      if (!el.hasAttribute('data-pos')) {
-        el.setAttribute('data-pos', attr('data-logo-position') || 'top-right');
+      if (!el.hasAttribute("data-pos")) {
+        el.setAttribute("data-pos", attr("data-logo-position") || "top-right");
       }
       /* Custom props go on .deck, not on the element: the element inherits
          them, and the print rules (which paint the logo per page on
          .slide::after) can read them too. An inline --logo-* on a
          hand-authored element wins for the element, so mirror it up. */
       const mirror = (attrName, prop) => {
-        const v = (attrName && attr(attrName)) || el.style.getPropertyValue(prop);
+        const v =
+          (attrName && attr(attrName)) || el.style.getPropertyValue(prop);
         if (v) deck.style.setProperty(prop, v.trim());
       };
-      mirror('data-logo-size', '--logo-size');
-      mirror('data-logo-opacity', '--logo-opacity');
-      mirror(null, '--logo-inset-x');
-      mirror(null, '--logo-inset-y');
+      mirror("data-logo-size", "--logo-size");
+      mirror("data-logo-opacity", "--logo-opacity");
+      mirror(null, "--logo-inset-x");
+      mirror(null, "--logo-inset-y");
 
       /* Print can't use the element itself — see the @media print note in
          base.css. Hand the URL and the corner to the per-page painter.
@@ -119,18 +151,103 @@
          (assets/base.css), not against the deck, so it must be absolute. */
       const src = el.src;
       if (src) {
-        deck.style.setProperty('--logo-print', 'url("' + src.replace(/["\\]/g, '\\$&') + '")');
-        deck.setAttribute('data-logo-print', el.getAttribute('data-pos'));
+        deck.style.setProperty(
+          "--logo-print",
+          'url("' + src.replace(/["\\]/g, "\\$&") + '")',
+        );
+        deck.setAttribute("data-logo-print", el.getAttribute("data-pos"));
       }
       return el;
     })();
 
     /* Per-slide opt-out: <section class="slide" data-no-logo> — covers and
        full-bleed image slides usually carry their own branding. */
-    function syncLogo(slide){
+    function syncLogo(slide) {
       if (!logoEl) return;
-      logoEl.style.display = (slide && slide.hasAttribute('data-no-logo')) ? 'none' : '';
+      logoEl.style.display =
+        slide && slide.hasAttribute("data-no-logo") ? "none" : "";
     }
+
+    /* ===== Auto-rotating image showcase (.repo-rotator) ===== */
+    function initRotators() {
+      const rotators = [];
+      slides.forEach((slide, slideIdx) => {
+        slide.querySelectorAll(".repo-rotator").forEach((el) => {
+          const frames = Array.from(el.querySelectorAll(".rotator-frame"));
+          if (frames.length <= 1) return;
+          const interval =
+            parseInt(el.getAttribute("data-interval") || "3600", 10) || 3600;
+          let cur = Math.max(
+            0,
+            frames.findIndex((f) => f.classList.contains("is-current")),
+          );
+          let timer = null;
+
+          let dotsWrap = el.querySelector(".rotator-dots");
+          if (!dotsWrap) {
+            dotsWrap = document.createElement("div");
+            dotsWrap.className = "rotator-dots";
+            el.appendChild(dotsWrap);
+          } else {
+            dotsWrap.innerHTML = "";
+          }
+
+          const dots = frames.map((_, i) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "rotator-dot" + (i === cur ? " is-current" : "");
+            btn.setAttribute("aria-label", "Show screenshot " + (i + 1));
+            btn.addEventListener("click", (ev) => {
+              ev.stopPropagation();
+              show(i);
+              restart();
+            });
+            dotsWrap.appendChild(btn);
+            return btn;
+          });
+
+          function show(nextIdx) {
+            cur = ((nextIdx % frames.length) + frames.length) % frames.length;
+            frames.forEach((f, i) =>
+              f.classList.toggle("is-current", i === cur),
+            );
+            dots.forEach((d, i) => d.classList.toggle("is-current", i === cur));
+          }
+
+          function stop() {
+            if (timer) {
+              clearInterval(timer);
+              timer = null;
+            }
+          }
+
+          function restart() {
+            stop();
+            timer = setInterval(() => show(cur + 1), interval);
+          }
+
+          el.addEventListener("click", () => {
+            show(cur + 1);
+            restart();
+          });
+
+          rotators.push({slideIdx, show, stop, restart});
+        });
+      });
+
+      return function syncRotators(activeSlideIdx) {
+        rotators.forEach((r) => {
+          if (r.slideIdx === activeSlideIdx) {
+            r.show(0);
+            r.restart();
+          } else {
+            r.stop();
+          }
+        });
+      };
+    }
+
+    const syncRotators = initRotators();
 
     const previewOnlyIdx = getPreviewIdx();
     const isPreviewMode = previewOnlyIdx >= 0 && previewOnlyIdx < slides.length;
@@ -139,59 +256,68 @@
     if (isPreviewMode) {
       function showSlide(i) {
         slides.forEach((s, j) => {
-          const active = (j === i);
-          s.classList.toggle('is-active', active);
-          s.style.display = active ? '' : 'none';
+          const active = j === i;
+          s.classList.toggle("is-active", active);
+          s.style.display = active ? "" : "none";
           if (active) {
-            s.style.opacity = '1';
-            s.style.transform = 'none';
-            s.style.pointerEvents = 'auto';
+            s.style.opacity = "1";
+            s.style.transform = "none";
+            s.style.pointerEvents = "auto";
           }
         });
+        syncRotators(i);
       }
       showSlide(previewOnlyIdx);
       syncLogo(slides[previewOnlyIdx]);
       /* Hide chrome that the presenter shouldn't see in preview */
-      const hideSel = '.progress-bar, .notes-overlay, .overview, ' + NOTE_SEL;
-      document.querySelectorAll(hideSel).forEach(el => { el.style.display = 'none'; });
-      document.documentElement.setAttribute('data-preview', '1');
-      document.body.setAttribute('data-preview', '1');
+      const hideSel = ".progress-bar, .notes-overlay, .overview, " + NOTE_SEL;
+      document.querySelectorAll(hideSel).forEach((el) => {
+        el.style.display = "none";
+      });
+      document.documentElement.setAttribute("data-preview", "1");
+      document.body.setAttribute("data-preview", "1");
       /* Auto-detect theme base path for theme switching in preview mode */
       function getPreviewThemeBase() {
-        const base = document.documentElement.getAttribute('data-theme-base');
+        const base = document.documentElement.getAttribute("data-theme-base");
         if (base) return base;
-        const tl = document.getElementById('theme-link');
+        const tl = document.getElementById("theme-link");
         if (tl) {
-          const raw = tl.getAttribute('href') || '';
-          const ls = raw.lastIndexOf('/');
+          const raw = tl.getAttribute("href") || "";
+          const ls = raw.lastIndexOf("/");
           if (ls >= 0) return raw.substring(0, ls + 1);
         }
-        return 'assets/themes/';
+        return "assets/themes/";
       }
       const previewThemeBase = getPreviewThemeBase();
 
       /* Listen for postMessage from parent presenter window:
        *  - preview-goto: switch visible slide WITHOUT reloading
        *  - preview-theme: switch theme CSS link to match audience window */
-      window.addEventListener('message', function(e) {
+      window.addEventListener("message", function (e) {
         if (!e.data) return;
-        if (e.data.type === 'preview-goto') {
+        if (e.data.type === "preview-goto") {
           const n = parseInt(e.data.idx, 10);
-          if (n >= 0 && n < slides.length) { showSlide(n); syncLogo(slides[n]); }
-        } else if (e.data.type === 'preview-theme' && e.data.name) {
-          let link = document.getElementById('theme-link');
+          if (n >= 0 && n < slides.length) {
+            showSlide(n);
+            syncLogo(slides[n]);
+          }
+        } else if (e.data.type === "preview-theme" && e.data.name) {
+          let link = document.getElementById("theme-link");
           if (!link) {
-            link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.id = 'theme-link';
+            link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.id = "theme-link";
             document.head.appendChild(link);
           }
-          link.href = previewThemeBase + e.data.name + '.css';
-          document.documentElement.setAttribute('data-theme', e.data.name);
+          link.href = previewThemeBase + e.data.name + ".css";
+          document.documentElement.setAttribute("data-theme", e.data.name);
         }
       });
       /* Signal to parent that preview iframe is ready */
-      try { window.parent && window.parent.postMessage({ type: 'preview-ready' }, '*'); } catch(e) {}
+      try {
+        window.parent &&
+          window.parent.postMessage({type: "preview-ready"}, "*");
+      } catch (e) {}
       return;
     }
 
@@ -199,173 +325,207 @@
     const total = slides.length;
 
     /* ===== BroadcastChannel for presenter sync ===== */
-    const CHANNEL_NAME = 'html-ppt-presenter-' + location.pathname;
+    const CHANNEL_NAME = "html-ppt-presenter-" + location.pathname;
     let bc;
-    try { bc = new BroadcastChannel(CHANNEL_NAME); } catch(e) { bc = null; }
+    try {
+      bc = new BroadcastChannel(CHANNEL_NAME);
+    } catch (e) {
+      bc = null;
+    }
 
     // Are we running inside the presenter popup? (legacy flag, now unused)
     const isPresenterWindow = false;
 
     /* ===== progress bar ===== */
-    let bar = document.querySelector('.progress-bar');
+    let bar = document.querySelector(".progress-bar");
     if (!bar) {
-      bar = document.createElement('div');
-      bar.className = 'progress-bar';
-      bar.innerHTML = '<span></span>';
+      bar = document.createElement("div");
+      bar.className = "progress-bar";
+      bar.innerHTML = "<span></span>";
       document.body.appendChild(bar);
     }
-    const barFill = bar.querySelector('span');
+    const barFill = bar.querySelector("span");
 
     /* ===== notes overlay (N key) ===== */
-    let notes = document.querySelector('.notes-overlay');
+    let notes = document.querySelector(".notes-overlay");
     if (!notes) {
-      notes = document.createElement('div');
-      notes.className = 'notes-overlay';
+      notes = document.createElement("div");
+      notes.className = "notes-overlay";
       document.body.appendChild(notes);
     }
 
     /* ===== overview grid (O key) ===== */
-    let overview = document.querySelector('.overview');
+    let overview = document.querySelector(".overview");
     if (!overview) {
-      overview = document.createElement('div');
-      overview.className = 'overview';
+      overview = document.createElement("div");
+      overview.className = "overview";
       slides.forEach((s, i) => {
-        const t = document.createElement('div');
-        t.className = 'thumb';
+        const t = document.createElement("div");
+        t.className = "thumb";
         // Force 16:9 aspect ratio robustly
-        t.style.padding = '0 0 56.25% 0';
-        t.style.height = '0';
-        t.style.position = 'relative';
-        t.style.overflow = 'hidden';
+        t.style.padding = "0 0 56.25% 0";
+        t.style.height = "0";
+        t.style.position = "relative";
+        t.style.overflow = "hidden";
 
-        const title = s.getAttribute('data-title') ||
-          (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1));
-        
+        const title =
+          s.getAttribute("data-title") ||
+          (s.querySelector("h1,h2,h3") || {}).textContent ||
+          "Slide " + (i + 1);
+
         // Create a container for the mini-slide
-        const mini = document.createElement('div');
-        mini.className = 'mini-slide';
-        mini.style.position = 'absolute';
-        mini.style.top = '0';
-        mini.style.left = '0';
-        mini.style.width = '1920px';
-        mini.style.height = '1080px';
-        mini.style.transformOrigin = 'top left';
-        mini.style.pointerEvents = 'none';
-        mini.style.background = 'var(--bg)';
-        
+        const mini = document.createElement("div");
+        mini.className = "mini-slide";
+        mini.style.position = "absolute";
+        mini.style.top = "0";
+        mini.style.left = "0";
+        mini.style.width = "1920px";
+        mini.style.height = "1080px";
+        mini.style.transformOrigin = "top left";
+        mini.style.pointerEvents = "none";
+        mini.style.background = "var(--bg)";
+
         // Clone the slide content
         const clone = s.cloneNode(true);
-        clone.className = 'slide is-active'; // force active styles
-        clone.style.position = 'absolute';
-        clone.style.inset = '0';
-        clone.style.transform = 'none';
-        clone.style.opacity = '1';
-        clone.style.padding = '72px 96px'; // ensure padding is kept
-        
+        clone.querySelectorAll("video").forEach((v) => {
+          v.removeAttribute("autoplay");
+          v.muted = true;
+        });
+        clone.className = "slide is-active"; // force active styles
+        clone.style.position = "absolute";
+        clone.style.inset = "0";
+        clone.style.transform = "none";
+        clone.style.opacity = "1";
+        clone.style.padding = "72px 96px"; // ensure padding is kept
+
         mini.appendChild(clone);
         t.appendChild(mini);
 
         // Add the number and title overlay
-        const overlay = document.createElement('div');
-        overlay.style.position = 'absolute';
-        overlay.style.inset = '0';
-        overlay.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.8) 100%)';
-        overlay.style.color = '#fff';
-        overlay.style.zIndex = '10';
-        overlay.style.pointerEvents = 'none';
-        
-        const n = document.createElement('div');
-        n.className = 'n';
+        const overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.inset = "0";
+        overlay.style.background =
+          "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.8) 100%)";
+        overlay.style.color = "#fff";
+        overlay.style.zIndex = "10";
+        overlay.style.pointerEvents = "none";
+
+        const n = document.createElement("div");
+        n.className = "n";
         n.textContent = i + 1;
-        n.style.position = 'absolute';
-        n.style.top = '12px';
-        n.style.left = '16px';
-        n.style.fontWeight = '700';
-        n.style.fontSize = '16px';
-        n.style.color = '#fff';
-        n.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
-        
-        const text = document.createElement('div');
-        text.className = 't';
-        text.textContent = title.trim().slice(0,80);
-        text.style.position = 'absolute';
-        text.style.bottom = '12px';
-        text.style.left = '16px';
-        text.style.right = '16px';
-        text.style.fontWeight = '600';
-        text.style.fontSize = '14px';
-        text.style.color = '#fff';
-        text.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
-        
+        n.style.position = "absolute";
+        n.style.top = "12px";
+        n.style.left = "16px";
+        n.style.fontWeight = "700";
+        n.style.fontSize = "16px";
+        n.style.color = "#fff";
+        n.style.textShadow = "0 1px 4px rgba(0,0,0,0.8)";
+
+        const text = document.createElement("div");
+        text.className = "t";
+        text.textContent = title.trim().slice(0, 80);
+        text.style.position = "absolute";
+        text.style.bottom = "12px";
+        text.style.left = "16px";
+        text.style.right = "16px";
+        text.style.fontWeight = "600";
+        text.style.fontSize = "14px";
+        text.style.color = "#fff";
+        text.style.textShadow = "0 1px 4px rgba(0,0,0,0.8)";
+
         overlay.appendChild(n);
         overlay.appendChild(text);
         t.appendChild(overlay);
 
-        t.addEventListener('click', () => { go(i); toggleOverview(false); });
+        t.addEventListener("click", () => {
+          go(i);
+          toggleOverview(false);
+        });
         overview.appendChild(t);
       });
       document.body.appendChild(overview);
     }
 
     /* ===== navigation ===== */
-    function go(n, fromRemote){
-      n = Math.max(0, Math.min(total-1, n));
-      slides.forEach((s,i) => {
-        s.classList.toggle('is-active', i===n);
-        s.classList.toggle('is-prev', i<n);
+    function go(n, fromRemote) {
+      n = Math.max(0, Math.min(total - 1, n));
+      slides.forEach((s, i) => {
+        s.classList.toggle("is-active", i === n);
+        s.classList.toggle("is-prev", i < n);
       });
       idx = n;
       syncLogo(slides[n]);
-      barFill.style.width = ((n+1)/total*100)+'%';
-      const numEl = document.querySelector('.slide-number');
-      if (numEl) { numEl.setAttribute('data-current', n+1); numEl.setAttribute('data-total', total); }
+      barFill.style.width = ((n + 1) / total) * 100 + "%";
+      const numEl = document.querySelector(".slide-number");
+      if (numEl) {
+        numEl.setAttribute("data-current", n + 1);
+        numEl.setAttribute("data-total", total);
+      }
 
       // notes (bottom overlay)
       const note = slides[n].querySelector(NOTE_SEL);
-      notes.innerHTML = note ? note.innerHTML : '';
+      notes.innerHTML = note ? note.innerHTML : "";
 
       // hash
-      const hashTarget = '#/'+(n+1);
+      const hashTarget = "#/" + (n + 1);
       if (location.hash !== hashTarget && !isPresenterWindow) {
-        history.replaceState(null,'', hashTarget);
+        history.replaceState(null, "", hashTarget);
       }
 
       // re-trigger entry animations
-      slides[n].querySelectorAll('[data-anim]').forEach(el => {
-        const a = el.getAttribute('data-anim');
-        el.classList.remove('anim-'+a);
+      slides[n].querySelectorAll("[data-anim]").forEach((el) => {
+        const a = el.getAttribute("data-anim");
+        el.classList.remove("anim-" + a);
         void el.offsetWidth;
-        el.classList.add('anim-'+a);
+        el.classList.add("anim-" + a);
       });
 
+      // auto-play active slide videos & pause inactive slide videos
+      slides.forEach((s, i) => {
+        s.querySelectorAll("video").forEach((v) => {
+          if (i === n) {
+            v.muted = true;
+            const p = v.play();
+            if (p && typeof p.catch === "function") p.catch(function () {});
+          } else {
+            try {
+              v.pause();
+            } catch (e) {}
+          }
+        });
+      });
+
+      syncRotators(n);
+
       // counter-up
-      slides[n].querySelectorAll('.counter').forEach(el => {
-        const target = parseFloat(el.getAttribute('data-to')||el.textContent);
-        const dur = parseInt(el.getAttribute('data-dur')||'1200',10);
+      slides[n].querySelectorAll(".counter").forEach((el) => {
+        const target = parseFloat(el.getAttribute("data-to") || el.textContent);
+        const dur = parseInt(el.getAttribute("data-dur") || "1200", 10);
         const start = performance.now();
         const from = 0;
-        function tick(now){
-          const t = Math.min(1,(now-start)/dur);
-          const v = from + (target-from)*(1-Math.pow(1-t,3));
-          el.textContent = (target % 1 === 0) ? Math.round(v) : v.toFixed(1);
-          if (t<1) requestAnimationFrame(tick);
+        function tick(now) {
+          const t = Math.min(1, (now - start) / dur);
+          const v = from + (target - from) * (1 - Math.pow(1 - t, 3));
+          el.textContent = target % 1 === 0 ? Math.round(v) : v.toFixed(1);
+          if (t < 1) requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
       });
 
       // Broadcast to other window (audience ↔ presenter)
       if (!fromRemote && bc) {
-        bc.postMessage({ type: 'go', idx: n });
+        bc.postMessage({type: "go", idx: n});
       }
     }
 
     /* ===== listen for remote navigation / theme changes ===== */
     if (bc) {
-      bc.onmessage = function(e) {
+      bc.onmessage = function (e) {
         if (!e.data) return;
-        if (e.data.type === 'go' && typeof e.data.idx === 'number') {
+        if (e.data.type === "go" && typeof e.data.idx === "number") {
           go(e.data.idx, true);
-        } else if (e.data.type === 'theme' && e.data.name) {
+        } else if (e.data.type === "theme" && e.data.name) {
           /* Sync theme across windows */
           const i = themes.indexOf(e.data.name);
           if (i >= 0) themeIdx = i;
@@ -374,17 +534,23 @@
       };
     }
 
-    function toggleNotes(force){ notes.classList.toggle('open', force!==undefined?force:!notes.classList.contains('open')); }
-    function toggleOverview(force){
-      const isOpen = force!==undefined ? force : !overview.classList.contains('open');
-      overview.classList.toggle('open', isOpen);
+    function toggleNotes(force) {
+      notes.classList.toggle(
+        "open",
+        force !== undefined ? force : !notes.classList.contains("open"),
+      );
+    }
+    function toggleOverview(force) {
+      const isOpen =
+        force !== undefined ? force : !overview.classList.contains("open");
+      overview.classList.toggle("open", isOpen);
       if (isOpen) {
         requestAnimationFrame(() => {
-          const thumbs = overview.querySelectorAll('.thumb');
+          const thumbs = overview.querySelectorAll(".thumb");
           if (thumbs.length) {
             const scale = thumbs[0].clientWidth / 1920;
-            overview.querySelectorAll('.mini-slide').forEach(m => {
-              m.style.transform = 'scale(' + scale + ')';
+            overview.querySelectorAll(".mini-slide").forEach((m) => {
+              m.style.transform = "scale(" + scale + ")";
             });
           }
         });
@@ -409,25 +575,40 @@
       }
 
       // Build absolute URL of THIS deck file (without hash/query)
-      const deckUrl = location.protocol + '//' + location.host + location.pathname;
+      const deckUrl =
+        location.protocol + "//" + location.host + location.pathname;
 
       // Collect slide titles + notes (HTML strings)
       const slideMeta = slides.map((s, i) => {
         const note = s.querySelector(NOTE_SEL);
         return {
-          title: s.getAttribute('data-title') ||
-            (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1)),
-          notes: note ? note.innerHTML : ''
+          title:
+            s.getAttribute("data-title") ||
+            (s.querySelector("h1,h2,h3") || {}).textContent ||
+            "Slide " + (i + 1),
+          notes: note ? note.innerHTML : "",
         };
       });
 
       /* Capture current theme so presenter previews match the audience */
-      const currentTheme = root.getAttribute('data-theme') || (themes[themeIdx] || '');
-      const presenterHTML = buildPresenterHTML(deckUrl, slideMeta, total, idx, CHANNEL_NAME, currentTheme);
+      const currentTheme =
+        root.getAttribute("data-theme") || themes[themeIdx] || "";
+      const presenterHTML = buildPresenterHTML(
+        deckUrl,
+        slideMeta,
+        total,
+        idx,
+        CHANNEL_NAME,
+        currentTheme,
+      );
 
-      presenterWin = window.open('', 'html-ppt-presenter', 'width=1280,height=820,menubar=no,toolbar=no');
+      presenterWin = window.open(
+        "",
+        "html-ppt-presenter",
+        "width=1280,height=820,menubar=no,toolbar=no",
+      );
       if (!presenterWin) {
-        alert('Please allow pop-ups to use Presenter View.');
+        alert("Please allow pop-ups to use Presenter View.");
         return;
       }
       presenterWin.document.open();
@@ -435,19 +616,27 @@
       presenterWin.document.close();
     }
 
-    function buildPresenterHTML(deckUrl, slideMeta, total, startIdx, channelName, currentTheme) {
+    function buildPresenterHTML(
+      deckUrl,
+      slideMeta,
+      total,
+      startIdx,
+      channelName,
+      currentTheme,
+    ) {
       /* Notes are authored HTML. Escaping "<" keeps a literal </script> in a
          slide's notes from closing the inline script that carries this JSON —
          which would kill the whole presenter init. */
-      const embed = (v) => JSON.stringify(v).replace(/</g, '\\u003c');
+      const embed = (v) => JSON.stringify(v).replace(/</g, "\\u003c");
       const metaJSON = embed(slideMeta);
       const deckUrlJSON = embed(deckUrl);
       const channelJSON = embed(channelName);
-      const themeJSON = embed(currentTheme || '');
-      const storageKey = 'html-ppt-presenter:' + location.pathname;
+      const themeJSON = embed(currentTheme || "");
+      const storageKey = "html-ppt-presenter:" + location.pathname;
 
       // Build the document as a single template string for clarity
-      return `<!DOCTYPE html>
+      return (
+        `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -1012,85 +1201,136 @@
     if (window.console && console.error) console.error('[html-ppt] presenter init:', e);
   }
 })();
-</` + `script>
-</body></html>`;
+</` +
+        `script>
+</body></html>`
+      );
     }
 
-    function fullscreen(){ const el=document.documentElement;
-      if (!document.fullscreenElement) el.requestFullscreen&&el.requestFullscreen();
-      else document.exitFullscreen&&document.exitFullscreen();
+    function fullscreen() {
+      const el = document.documentElement;
+      if (!document.fullscreenElement)
+        el.requestFullscreen && el.requestFullscreen();
+      else document.exitFullscreen && document.exitFullscreen();
     }
 
     // theme cycling
     const root = document.documentElement;
-    const themesAttr = root.getAttribute('data-themes') || document.body.getAttribute('data-themes');
-    const themes = themesAttr ? themesAttr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+    const themesAttr =
+      root.getAttribute("data-themes") ||
+      document.body.getAttribute("data-themes");
+    const themes = themesAttr
+      ? themesAttr
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
     let themeIdx = 0;
 
     // Auto-detect theme base path from existing <link id="theme-link">
-    let themeBase = root.getAttribute('data-theme-base');
+    let themeBase = root.getAttribute("data-theme-base");
     if (!themeBase) {
-      const existingLink = document.getElementById('theme-link');
+      const existingLink = document.getElementById("theme-link");
       if (existingLink) {
         // el.getAttribute('href') gives the raw relative path written in HTML
-        const rawHref = existingLink.getAttribute('href') || '';
-        const lastSlash = rawHref.lastIndexOf('/');
-        themeBase = lastSlash >= 0 ? rawHref.substring(0, lastSlash + 1) : 'assets/themes/';
+        const rawHref = existingLink.getAttribute("href") || "";
+        const lastSlash = rawHref.lastIndexOf("/");
+        themeBase =
+          lastSlash >= 0
+            ? rawHref.substring(0, lastSlash + 1)
+            : "assets/themes/";
       } else {
-        themeBase = 'assets/themes/';
+        themeBase = "assets/themes/";
       }
     }
 
     function applyTheme(name) {
-      let link = document.getElementById('theme-link');
+      let link = document.getElementById("theme-link");
       if (!link) {
-        link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.id = 'theme-link';
+        link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.id = "theme-link";
         document.head.appendChild(link);
       }
-      link.href = themeBase + name + '.css';
-      root.setAttribute('data-theme', name);
-      const ind = document.querySelector('.theme-indicator');
+      link.href = themeBase + name + ".css";
+      root.setAttribute("data-theme", name);
+      const ind = document.querySelector(".theme-indicator");
       if (ind) ind.textContent = name;
     }
-    function cycleTheme(fromRemote){
+    function cycleTheme(fromRemote) {
       if (!themes.length) return;
-      themeIdx = (themeIdx+1) % themes.length;
+      themeIdx = (themeIdx + 1) % themes.length;
       const name = themes[themeIdx];
       applyTheme(name);
       /* Broadcast to other window (audience ↔ presenter) */
-      if (!fromRemote && bc) bc.postMessage({ type: 'theme', name: name });
+      if (!fromRemote && bc) bc.postMessage({type: "theme", name: name});
     }
 
     // animation cycling on current slide
     let animIdx = 0;
-    function cycleAnim(){
-      animIdx = (animIdx+1) % ANIMS.length;
+    function cycleAnim() {
+      animIdx = (animIdx + 1) % ANIMS.length;
       const a = ANIMS[animIdx];
-      const target = slides[idx].querySelector('[data-anim-target]') || slides[idx];
-      ANIMS.forEach(x => target.classList.remove('anim-'+x));
+      const target =
+        slides[idx].querySelector("[data-anim-target]") || slides[idx];
+      ANIMS.forEach((x) => target.classList.remove("anim-" + x));
       void target.offsetWidth;
-      target.classList.add('anim-'+a);
-      target.setAttribute('data-anim', a);
-      const ind = document.querySelector('.anim-indicator');
+      target.classList.add("anim-" + a);
+      target.setAttribute("data-anim", a);
+      const ind = document.querySelector(".anim-indicator");
       if (ind) ind.textContent = a;
     }
 
-    document.addEventListener('keydown', function (e) {
-      if (e.metaKey||e.ctrlKey||e.altKey) return;
+    document.addEventListener("keydown", function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
       switch (e.key) {
-        case 'ArrowRight': case ' ': case 'PageDown': case 'Enter': go(idx+1); e.preventDefault(); break;
-        case 'ArrowLeft': case 'PageUp': case 'Backspace': go(idx-1); e.preventDefault(); break;
-        case 'Home': go(0); break;
-        case 'End': go(total-1); break;
-        case 'f': case 'F': fullscreen(); break;
-        case 's': case 'S': openPresenterWindow(); break;
-        case 'n': case 'N': toggleNotes(); break;
-        case 'o': case 'O': toggleOverview(); break;
-        case 't': case 'T': cycleTheme(); break;
-        case 'a': case 'A': cycleAnim(); break;
-        case 'Escape': toggleOverview(false); toggleNotes(false); break;
+        case "ArrowRight":
+        case " ":
+        case "PageDown":
+        case "Enter":
+          go(idx + 1);
+          e.preventDefault();
+          break;
+        case "ArrowLeft":
+        case "PageUp":
+        case "Backspace":
+          go(idx - 1);
+          e.preventDefault();
+          break;
+        case "Home":
+          go(0);
+          break;
+        case "End":
+          go(total - 1);
+          break;
+        case "f":
+        case "F":
+          fullscreen();
+          break;
+        case "s":
+        case "S":
+          openPresenterWindow();
+          break;
+        case "n":
+        case "N":
+          toggleNotes();
+          break;
+        case "o":
+        case "O":
+          toggleOverview();
+          break;
+        case "t":
+        case "T":
+          cycleTheme();
+          break;
+        case "a":
+        case "A":
+          cycleAnim();
+          break;
+        case "Escape":
+          toggleOverview(false);
+          toggleNotes(false);
+          break;
       }
     });
 
@@ -1103,59 +1343,86 @@
      * single-finger, clearly horizontal, long enough and quick enough —
      * otherwise it falls through untouched.
      */
-    (function initTouchNav(){
+    (function initTouchNav() {
       /* No capability sniffing on purpose. Touch listeners cost nothing on a
          device that never fires them, and `ontouchstart in window` /
          maxTouchPoints both misreport on touchscreen laptops and some
          tablets — a guard here would silently remove the feature on exactly
          the devices that need it. */
-      var SWIPE_MIN_PX = 50;    // shorter than this is a tap or a wobble
-      var SWIPE_RATIO  = 1.5;   // must be this much more horizontal than vertical
-      var SWIPE_MAX_MS = 800;   // slower than this is a drag, not a swipe
+      var SWIPE_MIN_PX = 50; // shorter than this is a tap or a wobble
+      var SWIPE_RATIO = 1.5; // must be this much more horizontal than vertical
+      var SWIPE_MAX_MS = 800; // slower than this is a drag, not a swipe
 
-      var x0 = 0, y0 = 0, t0 = 0, tracking = false;
+      var x0 = 0,
+        y0 = 0,
+        t0 = 0,
+        tracking = false;
 
       function interactive(target) {
         if (!target || !target.closest) return false;
         /* Don't steal the gesture from the overview grid, the notes drawer,
            or anything the author made scrollable or tappable. */
-        return !!target.closest('.overview, .notes-overlay, a, button, input, textarea, select, [data-no-swipe]');
+        return !!target.closest(
+          ".overview, .notes-overlay, a, button, input, textarea, select, [data-no-swipe]",
+        );
       }
 
-      document.addEventListener('touchstart', function(e){
-        if (e.touches.length !== 1 || interactive(e.target)) { tracking = false; return; }
-        x0 = e.touches[0].clientX;
-        y0 = e.touches[0].clientY;
-        t0 = Date.now();
-        tracking = true;
-      }, { passive: true });
+      document.addEventListener(
+        "touchstart",
+        function (e) {
+          if (e.touches.length !== 1 || interactive(e.target)) {
+            tracking = false;
+            return;
+          }
+          x0 = e.touches[0].clientX;
+          y0 = e.touches[0].clientY;
+          t0 = Date.now();
+          tracking = true;
+        },
+        {passive: true},
+      );
 
-      document.addEventListener('touchmove', function(e){
-        /* A second finger means pinch-zoom — abandon the swipe. */
-        if (e.touches.length > 1) tracking = false;
-      }, { passive: true });
+      document.addEventListener(
+        "touchmove",
+        function (e) {
+          /* A second finger means pinch-zoom — abandon the swipe. */
+          if (e.touches.length > 1) tracking = false;
+        },
+        {passive: true},
+      );
 
-      document.addEventListener('touchend', function(e){
-        if (!tracking) return;
-        tracking = false;
-        var t = e.changedTouches && e.changedTouches[0];
-        if (!t) return;
-        if (Date.now() - t0 > SWIPE_MAX_MS) return;
-        var dx = t.clientX - x0, dy = t.clientY - y0;
-        if (Math.abs(dx) < SWIPE_MIN_PX) return;
-        if (Math.abs(dx) < Math.abs(dy) * SWIPE_RATIO) return;
-        go(dx < 0 ? idx + 1 : idx - 1);
-      }, { passive: true });
+      document.addEventListener(
+        "touchend",
+        function (e) {
+          if (!tracking) return;
+          tracking = false;
+          var t = e.changedTouches && e.changedTouches[0];
+          if (!t) return;
+          if (Date.now() - t0 > SWIPE_MAX_MS) return;
+          var dx = t.clientX - x0,
+            dy = t.clientY - y0;
+          if (Math.abs(dx) < SWIPE_MIN_PX) return;
+          if (Math.abs(dx) < Math.abs(dy) * SWIPE_RATIO) return;
+          go(dx < 0 ? idx + 1 : idx - 1);
+        },
+        {passive: true},
+      );
 
-      document.addEventListener('touchcancel', function(){ tracking = false; }, { passive: true });
+      document.addEventListener(
+        "touchcancel",
+        function () {
+          tracking = false;
+        },
+        {passive: true},
+      );
     })();
 
     // hash deep-link
-    function fromHash(){
-      const m = /^#\/(\d+)/.exec(location.hash||'');
-      if (m) go(Math.max(0, parseInt(m[1],10)-1));
+    function fromHash() {
+      const m = /^#\/(\d+)/.exec(location.hash || "");
+      if (m) go(Math.max(0, parseInt(m[1], 10) - 1));
     }
-    window.addEventListener('hashchange', fromHash);
+    window.addEventListener("hashchange", fromHash);
     fromHash();
     go(idx);
   });

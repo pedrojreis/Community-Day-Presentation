@@ -1,119 +1,462 @@
-<!DOCTYPE html>
-<html lang="en" data-themes="home-assistant,tokyo-night,dracula,catppuccin-mocha,terminal-green">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>A Home for Everyone · Open Home Foundation Community Day</title>
-<link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" id="theme-link" href="assets/themes/home-assistant.css">
-<link rel="stylesheet" href="assets/animations/animations.css">
-<link rel="stylesheet" href="style.css">
-</head>
-<body class="tpl-tech-sharing" data-fit="fluid">
-<div class="deck">
-
-  <section class="slide" data-title="A home for everyone">
-    <div class="slide-body hero">
-      <div class="hero-copy">
-        <p class="kicker">Open Home Foundation Community Day · Lisbon · 6 November 2026</p>
-        <h1 class="h1 anim-fade-up" data-anim="fade-up">The dashboard is<br>the <span class="gradient-text">face of our home.</span></h1>
-        <p class="lede">A spare tablet on the wall can turn Home Assistant into something the whole household can use.</p>
-        <div class="card wall-story">
-          <p>One tap for the lights. A glance to see what’s on. A welcoming control panel for family—and guests—without handing over a phone or giving anyone a tour of the app.</p>
-        </div>
-        <div class="tag-row">
-          <span class="tag">Familiar at a glance</span>
-          <span class="tag">High WAF</span>
-          <span class="tag">Guest-friendly</span>
-        </div>
-      </div>
-      <img class="badge hero-badge anim-zoom-pop" data-anim="zoom-pop" src="community-day-2026.png" alt="Open Home Foundation Community Day 2026">
-    </div>
-    <div class="deck-footer"><span class="mono">A HOME FOR EVERYONE</span><span class="slide-number" data-current="1" data-total="4"></span></div>
-    <div class="notes">Welcome everyone to Lisbon. A dashboard is often the first thing people see and touch in a smart home, so it becomes the face of Home Assistant at home. Imagine an old tablet that was sitting in a drawer: mounted on the wall, it becomes a simple shared control panel. The family can use it without needing to open an app, and guests can turn on a light or start a scene without asking for a walkthrough. That combination of easy, useful, and accepted by the household is the goal—high WAF, with no compromise on making the home feel welcoming.</div>
-  </section>
-
-  <section class="slide" data-title="The wall tablet">
-    <div class="slide-body">
-      <header class="slide-head">
-        <p class="kicker">the idea, in practice</p>
-        <h2 class="h2">From spare tablet to shared control panel.</h2>
-      </header>
-      <div class="video-layout">
-        <figure class="video-frame">
-          <video controls playsinline preload="metadata" aria-label="Video of my Home Assistant wall dashboard implementation">
-            <source src="implementation.mp4" type="video/mp4">
-            Your browser does not support embedded video. Open implementation.mp4 from this folder.
-          </video>
-          <figcaption class="video-caption">My Home Assistant wall-dashboard implementation</figcaption>
-        </figure>
-        <div class="card video-side">
-          <h3 class="h3">A home interface should feel obvious.</h3>
-          <ol class="point-list">
-            <li><span class="num">01</span><span>See what matters</span></li>
-            <li><span class="num">02</span><span>Tap to take action</span></li>
-            <li><span class="num">03</span><span>Make it work for everyone</span></li>
-          </ol>
-          <p class="side-note">No special app tour required.</p>
-        </div>
-      </div>
-    </div>
-    <div class="deck-footer"><span class="footer-brand"><img class="footer-badge" src="community-day-2026.png" alt=""><span class="mono">A HOME FOR EVERYONE</span></span><span class="slide-number" data-current="2" data-total="4"></span></div>
-    <div class="notes">Here’s a short video of my own implementation. The point isn’t that everyone needs the same screen or the same hardware. It’s that a wall-mounted tablet can make Home Assistant visible and approachable in the place where people already live. Think about the few things a family or a guest actually needs to do, and make those actions easy to find. The video shows one personal take on that idea.</div>
-  </section>
-
-  <section class="slide" data-title="Inspired by open source">
-    <div class="slide-body">
-      <header class="slide-head">
-        <p class="kicker">inspired by the community</p>
-        <h2 class="h2">Open source gives everyone a starting point.</h2>
-      </header>
-      <div class="project-grid anim-stagger-list" data-anim="stagger-list">
-        <article class="card project-card">
-          <div class="project-meta"><span class="project-num">01</span><span class="tag">YAML-based</span></div>
-          <h3 class="h3">Homio</h3>
-          <p>A clean, minimal Home Assistant dashboard built around YAML.</p>
-          <div class="project-scan">
-            <a class="project-qr" href="https://github.com/iamtherufus/Homio" target="_blank" rel="noopener noreferrer" aria-label="Open Homio on GitHub"><img src="qr/homio.svg" alt="QR code for Homio on GitHub"></a>
-            <div class="scan-copy"><span class="scan-hint">Scan to explore</span><span class="project-author">iamtherufus</span></div>
+<!doctype html>
+<html
+  lang="en"
+  data-themes="home-assistant,tokyo-night,dracula,catppuccin-mocha,terminal-green"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>A Home for Everyone · Open Home Foundation Community Day</title>
+    <link rel="stylesheet" href="assets/fonts.css" />
+    <link rel="stylesheet" href="assets/base.css" />
+    <link
+      rel="stylesheet"
+      id="theme-link"
+      href="assets/themes/home-assistant.css"
+    />
+    <link rel="stylesheet" href="assets/animations/animations.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="tpl-tech-sharing" data-fit="fluid">
+    <div class="deck">
+      <section class="slide" data-title="A home for everyone">
+        <div class="slide-body hero">
+          <div class="hero-copy">
+            <p class="kicker">
+              Open Home Foundation Community Day · Lisbon · 6 November 2026
+            </p>
+            <h1 class="h1 anim-fade-up" data-anim="fade-up">
+              The dashboard is<br />the
+              <span class="gradient-text">face of our home.</span>
+            </h1>
+            <p class="lede">
+              A spare tablet on the wall can turn Home Assistant into something
+              the whole household can use.
+            </p>
+            <div class="card wall-story">
+              <p>
+                One tap for the lights. A glance to see what’s on. A welcoming
+                control panel for family—and guests—without handing over a phone
+                or giving anyone a tour of the app.
+              </p>
+            </div>
+            <div class="tag-row">
+              <span class="tag">Familiar at a glance</span>
+              <span class="tag">High WAF</span>
+              <span class="tag">Guest-friendly</span>
+            </div>
           </div>
-        </article>
-        <article class="card project-card">
-          <div class="project-meta"><span class="project-num">02</span><span class="tag">Touch-first</span></div>
-          <h3 class="h3">Homie Dashboard</h3>
-          <p>A wall-tablet dashboard designed for touch and everyday use.</p>
-          <div class="project-scan">
-            <a class="project-qr" href="https://github.com/Big-Edge2297/homie-dashboard" target="_blank" rel="noopener noreferrer" aria-label="Open Homie Dashboard on GitHub"><img src="qr/homie-dashboard.svg" alt="QR code for Homie Dashboard on GitHub"></a>
-            <div class="scan-copy"><span class="scan-hint">Scan to explore</span><span class="project-author">Big-Edge2297</span></div>
-          </div>
-        </article>
-        <article class="card project-card">
-          <div class="project-meta"><span class="project-num">03</span><span class="tag">Plain web page</span></div>
-          <h3 class="h3">Home Assistant Tablet Dashboard</h3>
-          <p>A single-page tablet dashboard—no Lovelace, cards, or build step.</p>
-          <div class="project-scan">
-            <a class="project-qr" href="https://github.com/NathanLenias/Home-Assistant-Tablet-Dashboard" target="_blank" rel="noopener noreferrer" aria-label="Open Home Assistant Tablet Dashboard on GitHub"><img src="qr/tablet-dashboard.svg" alt="QR code for Home Assistant Tablet Dashboard on GitHub"></a>
-            <div class="scan-copy"><span class="scan-hint">Scan to explore</span><span class="project-author">NathanLenias</span></div>
-          </div>
-        </article>
-      </div>
-      <div class="open-source-note"><strong>Something for everyone, out of the box.</strong> Pick what fits, then make it yours—every one is fully customizable.</div>
-    </div>
-    <div class="deck-footer"><span class="footer-brand"><img class="footer-badge" src="community-day-2026.png" alt=""><span class="mono">A HOME FOR EVERYONE</span></span><span class="slide-number" data-current="3" data-total="4"></span></div>
-    <div class="notes">I didn’t arrive at this idea alone. These projects show how many different starting points the community has already made: a YAML-first approach, a touch-first wall dashboard, and a deliberately plain web page. You don’t have to begin from a blank screen, and you don’t have to adopt someone else’s design forever. Pick the starting point that feels right, change it to fit your home, and share what you learn. That’s one of the strengths of open source: there can be something useful out of the box, while customization stays open to everyone. Scan any of the codes to open the project on GitHub.</div>
-  </section>
+          <img
+            class="badge hero-badge anim-zoom-pop"
+            data-anim="zoom-pop"
+            src="community-day-2026.png"
+            alt="Open Home Foundation Community Day 2026"
+          />
+        </div>
+        <div class="deck-footer">
+          <span class="mono">A HOME FOR EVERYONE</span
+          ><span class="slide-number" data-current="1" data-total="6"></span>
+        </div>
+        <div class="notes">
+          Welcome everyone to Lisbon. A dashboard is often the first thing
+          people see and touch in a smart home, so it becomes the face of Home
+          Assistant at home. Imagine an old tablet that was sitting in a drawer:
+          mounted on the wall, it becomes a simple shared control panel. The
+          family can use it without needing to open an app, and guests can turn
+          on a light or start a scene without asking for a walkthrough. That
+          combination of easy, useful, and accepted by the household is the
+          goal—high WAF, with no compromise on making the home feel welcoming.
+        </div>
+      </section>
 
-  <section class="slide" data-title="Thank you and questions">
-    <div class="slide-body closing">
-      <img class="badge closing-badge anim-zoom-pop" data-anim="zoom-pop" src="community-day-2026.png" alt="Open Home Foundation Community Day 2026">
-      <h2 class="h1">Thank you!</h2>
-      <p class="closing-lede">Questions?</p>
-    </div>
-    <div class="deck-footer"><span class="mono">LISBON · 6 NOVEMBER 2026</span><span class="slide-number" data-current="4" data-total="4"></span></div>
-    <div class="notes">Thank you for listening. I’d love to hear what you’ve built, what has worked well for your household, and what you would want from a shared Home Assistant dashboard. Happy to take questions.</div>
-  </section>
+      <section class="slide" data-title="The wall tablet">
+        <div class="slide-body">
+          <header class="slide-head">
+            <p class="kicker">the idea, in practice</p>
+            <h2 class="h2">From spare tablet to shared control panel.</h2>
+          </header>
+          <div class="video-layout">
+            <figure class="video-frame">
+              <video
+                controls
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Video of my Home Assistant wall dashboard implementation"
+              >
+                <source src="implementation.mp4" type="video/mp4" />
+                Your browser does not support embedded video. Open
+                implementation.mp4 from this folder.
+              </video>
+              <figcaption class="video-caption">
+                My Home Assistant wall-dashboard implementation
+              </figcaption>
+            </figure>
+            <div class="card video-side">
+              <h3 class="h3">A home interface should feel obvious.</h3>
+              <ol class="point-list">
+                <li>
+                  <span class="num">01</span>
+                  <div class="point-copy">
+                    <strong>Room-by-room clarity</strong>
+                    <span
+                      >Dedicated views like <em>Sala</em> &amp;
+                      <em>Suite</em> with live temperature and state</span
+                    >
+                  </div>
+                </li>
+                <li>
+                  <span class="num">02</span>
+                  <div class="point-copy">
+                    <strong>One-tap everyday actions</strong>
+                    <span
+                      >Lights, climate, media, and scenes right where you walk
+                      by</span
+                    >
+                  </div>
+                </li>
+                <li>
+                  <span class="num">03</span>
+                  <div class="point-copy">
+                    <strong>Made for family &amp; guests</strong>
+                    <span
+                      >Visual status at a glance—no phone or app tour
+                      required</span
+                    >
+                  </div>
+                </li>
+              </ol>
+              <p class="side-note">
+                Built by adapting open-source ideas to fit how our home actually
+                works.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="deck-footer">
+          <span class="footer-brand"
+            ><img
+              class="footer-badge"
+              src="community-day-2026.png"
+              alt=""
+            /><span class="mono">A HOME FOR EVERYONE</span></span
+          ><span class="slide-number" data-current="2" data-total="6"></span>
+        </div>
+        <div class="notes">
+          Here’s a 27-second walkthrough of my own wall-mounted tablet at home.
+          Notice how it’s organized around real rooms—like Sala and Suite—so
+          anyone walking past can see room temperature and what’s active at a
+          glance, or tap once to toggle lights, scenes, or climate. The goal
+          isn’t to expose every sensor in Home Assistant; it’s to surface the
+          few actions that family and guests actually need every day. And the
+          best part? You don’t have to build this from scratch—let’s look at
+          three open-source projects from the community that give you a head
+          start depending on how you like to build.
+        </div>
+      </section>
 
-</div>
-<script src="assets/runtime.js"></script>
-</body>
+      <section class="slide" data-title="01 · Homio">
+        <div class="slide-body">
+          <header class="slide-head repo-head">
+            <div>
+              <p class="kicker">open-source starting point · 01 / 03</p>
+              <h2 class="h2">
+                Homio <span class="repo-sub">by iamtherufus</span>
+              </h2>
+            </div>
+            <div class="tag-row">
+              <span class="tag tag-accent">Lovelace YAML</span>
+              <span class="tag">button-card</span>
+              <span class="tag">Responsive tablet &amp; mobile</span>
+            </div>
+          </header>
+          <div class="repo-stage">
+            <div class="repo-rotator" data-interval="3600">
+              <figure class="rotator-frame is-current">
+                <img
+                  src="assets/screenshots/homio-hero.png"
+                  alt="Homio Lounge overview dashboard"
+                />
+                <figcaption class="shot-cap">
+                  Lounge overview · room banner &amp; quick controls
+                </figcaption>
+              </figure>
+              <figure class="rotator-frame">
+                <img
+                  src="assets/screenshots/homio-sub1.png"
+                  alt="Homio Lounge active controls"
+                  loading="lazy"
+                />
+                <figcaption class="shot-cap">
+                  Interactive light sliders &amp; states
+                </figcaption>
+              </figure>
+              <figure class="rotator-frame">
+                <img
+                  src="assets/screenshots/homio-sub2.png"
+                  alt="Homio Master bedroom view"
+                  loading="lazy"
+                />
+                <figcaption class="shot-cap">
+                  Room-by-room view (Master)
+                </figcaption>
+              </figure>
+            </div>
+            <a
+              class="project-qr corner-qr"
+              href="https://github.com/iamtherufus/Homio"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Homio on GitHub"
+              ><img src="qr/homio.svg" alt="QR code for Homio on GitHub"
+            /></a>
+          </div>
+        </div>
+        <div class="deck-footer">
+          <span class="footer-brand"
+            ><img
+              class="footer-badge"
+              src="community-day-2026.png"
+              alt=""
+            /><span class="mono">A HOME FOR EVERYONE</span></span
+          ><span class="slide-number" data-current="3" data-total="6"></span>
+        </div>
+        <div class="notes">
+          First up is Homio by iamtherufus — a clean, minimal Home Assistant
+          dashboard built around reusable YAML templates and custom Lovelace
+          cards. If you already enjoy working inside Home Assistant’s native
+          Lovelace ecosystem and YAML, this is a fantastic blueprint. It uses
+          button-card, layout-card, and slider templates to create clean room
+          banners with live temperature, humidity, and motion indicators right
+          at the top. Because it’s built with modular YAML includes, you define
+          a room card pattern once and reuse it across your lounge, bedrooms,
+          and mobile views.
+        </div>
+      </section>
+
+      <section class="slide" data-title="02 · Homie Dashboard">
+        <div class="slide-body">
+          <header class="slide-head repo-head">
+            <div>
+              <p class="kicker">open-source starting point · 02 / 03</p>
+              <h2 class="h2">
+                Homie Dashboard <span class="repo-sub">by Big-Edge2297</span>
+              </h2>
+            </div>
+            <div class="tag-row">
+              <span class="tag tag-accent">Touch-First UI</span>
+              <span class="tag">HACS / Custom HTML+JS</span>
+              <span class="tag">9 Built-in Themes</span>
+            </div>
+          </header>
+          <div class="repo-stage">
+            <div class="repo-rotator" data-interval="3600">
+              <figure class="rotator-frame is-current">
+                <img
+                  src="assets/screenshots/homie-hero.png"
+                  alt="Homie Dashboard main overview screen"
+                />
+                <figcaption class="shot-cap">
+                  Home overview · weather, rooms &amp; quick tiles
+                </figcaption>
+              </figure>
+              <figure class="rotator-frame">
+                <img
+                  src="assets/screenshots/homie-sub1.png"
+                  alt="Homie Dashboard Now Playing media view"
+                  loading="lazy"
+                />
+                <figcaption class="shot-cap">
+                  Dedicated Now Playing media screen
+                </figcaption>
+              </figure>
+              <figure class="rotator-frame">
+                <img
+                  src="assets/screenshots/homie-sub2.png"
+                  alt="Homie Dashboard lighting controls"
+                  loading="lazy"
+                />
+                <figcaption class="shot-cap">
+                  Touch-friendly lighting &amp; room modal
+                </figcaption>
+              </figure>
+            </div>
+            <a
+              class="project-qr corner-qr"
+              href="https://github.com/Big-Edge2297/homie-dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Homie Dashboard on GitHub"
+              ><img
+                src="qr/homie-dashboard.svg"
+                alt="QR code for Homie Dashboard on GitHub"
+            /></a>
+          </div>
+        </div>
+        <div class="deck-footer">
+          <span class="footer-brand"
+            ><img
+              class="footer-badge"
+              src="community-day-2026.png"
+              alt=""
+            /><span class="mono">A HOME FOR EVERYONE</span></span
+          ><span class="slide-number" data-current="4" data-total="6"></span>
+        </div>
+        <div class="notes">
+          Second is Homie Dashboard by Big-Edge2297 — a ready-made,
+          appliance-like wall-tablet experience with zero Lovelace YAML
+          required. This takes a very different approach: instead of wrestling
+          with Lovelace YAML, you install it via HACS or drop it into your www
+          folder and configure everything in a single config.js file. It’s
+          designed specifically for wall tablets, giving you dedicated,
+          touch-friendly screens for Now Playing, Weather, Solar, Cameras, and
+          Lights, plus nine built-in color themes right out of the box.
+        </div>
+      </section>
+
+      <section class="slide" data-title="03 · HA Tablet Dashboard">
+        <div class="slide-body">
+          <header class="slide-head repo-head">
+            <div>
+              <p class="kicker">open-source starting point · 03 / 03</p>
+              <h2 class="h2">
+                HA Tablet Dashboard
+                <span class="repo-sub">by NathanLenias</span>
+              </h2>
+            </div>
+            <div class="tag-row">
+              <span class="tag tag-accent">Plain HTML / CSS / JS</span>
+              <span class="tag">Direct WebSocket API</span>
+              <span class="tag">Zero Build Step</span>
+            </div>
+          </header>
+          <div class="repo-stage">
+            <div class="repo-rotator" data-interval="3600">
+              <figure class="rotator-frame is-current">
+                <img
+                  src="assets/screenshots/tablet-hero.png"
+                  alt="Home Assistant Tablet Dashboard home screen"
+                />
+                <figcaption class="shot-cap">
+                  Glassmorphism home screen · clock, weather &amp; room sidebar
+                </figcaption>
+              </figure>
+              <figure class="rotator-frame">
+                <img
+                  src="assets/screenshots/tablet-sub1.png"
+                  alt="Home Assistant Tablet Dashboard lights panel"
+                  loading="lazy"
+                />
+                <figcaption class="shot-cap">
+                  Lighting &amp; scene control panel
+                </figcaption>
+              </figure>
+              <figure class="rotator-frame">
+                <img
+                  src="assets/screenshots/tablet-sub2.png"
+                  alt="Home Assistant Tablet Dashboard vacuum floorplan"
+                  loading="lazy"
+                />
+                <figcaption class="shot-cap">
+                  Interactive vacuum room map &amp; status
+                </figcaption>
+              </figure>
+              <figure class="rotator-frame">
+                <img
+                  src="assets/screenshots/tablet-sub3.png"
+                  alt="Home Assistant Tablet Dashboard media and battery controls"
+                  loading="lazy"
+                />
+                <figcaption class="shot-cap">
+                  Sonos media controls &amp; battery status
+                </figcaption>
+              </figure>
+            </div>
+            <a
+              class="project-qr corner-qr"
+              href="https://github.com/NathanLenias/Home-Assistant-Tablet-Dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Home Assistant Tablet Dashboard on GitHub"
+              ><img
+                src="qr/tablet-dashboard.svg"
+                alt="QR code for Home Assistant Tablet Dashboard on GitHub"
+            /></a>
+          </div>
+        </div>
+        <div class="deck-footer">
+          <span class="footer-brand"
+            ><img
+              class="footer-badge"
+              src="community-day-2026.png"
+              alt=""
+            /><span class="mono">A HOME FOR EVERYONE</span></span
+          ><span class="slide-number" data-current="5" data-total="6"></span>
+        </div>
+        <div class="notes">
+          And third is Home Assistant Tablet Dashboard by NathanLenias — a
+          single-page static web app that talks directly to Home Assistant’s
+          WebSocket API, with no Lovelace, no framework, and no bundler. If you
+          have an older tablet where heavy web frameworks feel sluggish—or you
+          just love writing plain HTML, CSS, and vanilla JavaScript—this project
+          skips Lovelace and build steps completely. It connects straight to
+          Home Assistant’s WebSocket API from a static web page, and still packs
+          in awesome touches like an interactive vacuum floor plan, live Sonos
+          controls, battery auto-discovery, and a night sleep mode. Pick
+          whichever starting point matches your style, and make it yours.
+        </div>
+      </section>
+
+      <section class="slide" data-title="Thank you and questions">
+        <div class="slide-body closing">
+          <div class="closing-main">
+            <img
+              class="badge closing-badge anim-zoom-pop"
+              data-anim="zoom-pop"
+              src="community-day-2026.png"
+              alt="Open Home Foundation Community Day 2026"
+            />
+            <h2 class="h1">Thank you!</h2>
+            <p class="closing-lede">Questions?</p>
+          </div>
+          <div class="card closing-qr-card">
+            <a
+              class="project-qr closing-qr"
+              href="https://pedrojreis.github.io/Community-Day-Presentation/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open this presentation online"
+            >
+              <img
+                src="qr/presentation.svg"
+                alt="QR code for this presentation on GitHub Pages"
+              />
+            </a>
+            <div class="closing-qr-copy">
+              <span class="scan-hint">Missed a link? Scan for the deck</span>
+              <strong class="closing-qr-title"
+                >All slides, video &amp; GitHub repos</strong
+              >
+              <span class="mono closing-qr-url"
+                >pedrojreis.github.io/Community-Day-Presentation</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="deck-footer">
+          <span class="mono">LISBON · 6 NOVEMBER 2026</span
+          ><span class="slide-number" data-current="6" data-total="6"></span>
+        </div>
+        <div class="notes">
+          Thank you so much! If you missed any of the repository QR codes
+          earlier, scan this code right here to open the live slide deck on your
+          phone—it has the video and direct links to all three GitHub projects.
+          I’d love to hear what you’ve built for your own household or take any
+          questions!
+        </div>
+      </section>
+    </div>
+    <script src="assets/runtime.js"></script>
+  </body>
 </html>
