@@ -58,14 +58,15 @@
           ><span class="slide-number" data-current="1" data-total="6"></span>
         </div>
         <div class="notes">
-          Welcome everyone to Lisbon. A dashboard is often the first thing
-          people see and touch in a smart home, so it becomes the face of Home
-          Assistant at home. Imagine an old tablet that was sitting in a drawer:
-          mounted on the wall, it becomes a simple shared control panel. The
-          family can use it without needing to open an app, and guests can turn
-          on a light or start a scene without asking for a walkthrough. That
-          combination of easy, useful, and accepted by the household is the
-          goal—high WAF, with no compromise on making the home feel welcoming.
+          Sejam todos muito bem-vindos a Lisboa. Numa casa inteligente, o painel
+          é muitas vezes a primeira coisa que as pessoas veem e usam, por isso
+          acaba por ser a cara do Home Assistant em casa. Imaginem um tablet
+          antigo, esquecido numa gaveta: montado na parede, transforma-se num
+          painel de controlo simples e partilhado. A família pode usá-lo sem ter
+          de abrir uma aplicação, e as visitas podem acender uma luz ou ativar
+          uma cena sem precisarem de uma explicação. O objetivo é juntar
+          simplicidade e utilidade numa solução que toda a família adote — um
+          WAF elevado, sem deixar de tornar a casa acolhedora.
         </div>
       </section>
 
@@ -144,15 +145,16 @@
           ><span class="slide-number" data-current="2" data-total="6"></span>
         </div>
         <div class="notes">
-          Here’s a 27-second walkthrough of my own wall-mounted tablet at home.
-          Notice how it’s organized around real rooms—like Sala and Suite—so
-          anyone walking past can see room temperature and what’s active at a
-          glance, or tap once to toggle lights, scenes, or climate. The goal
-          isn’t to expose every sensor in Home Assistant; it’s to surface the
-          few actions that family and guests actually need every day. And the
-          best part? You don’t have to build this from scratch—let’s look at
-          three open-source projects from the community that give you a head
-          start depending on how you like to build.
+          Aqui têm uma visita guiada de 27 segundos ao tablet que tenho
+          instalado na parede de casa. Reparem como está organizado por
+          divisões, como a Sala e a Suite, para que qualquer pessoa que passe
+          possa ver num relance a temperatura e o que está ligado, ou tocar uma
+          vez para controlar as luzes, as cenas ou a climatização. O objetivo
+          não é mostrar todos os sensores do Home Assistant, mas sim destacar as
+          poucas ações de que a família e as visitas precisam no dia a dia. E a
+          melhor parte? Não têm de criar tudo de raiz. Vamos conhecer três
+          projetos de código aberto da comunidade que vos podem dar uma boa
+          base, consoante a forma como gostam de construir.
         </div>
       </section>
 
@@ -223,15 +225,15 @@
           ><span class="slide-number" data-current="3" data-total="6"></span>
         </div>
         <div class="notes">
-          First up is Homio by iamtherufus — a clean, minimal Home Assistant
-          dashboard built around reusable YAML templates and custom Lovelace
-          cards. If you already enjoy working inside Home Assistant’s native
-          Lovelace ecosystem and YAML, this is a fantastic blueprint. It uses
-          button-card, layout-card, and slider templates to create clean room
-          banners with live temperature, humidity, and motion indicators right
-          at the top. Because it’s built with modular YAML includes, you define
-          a room card pattern once and reuse it across your lounge, bedrooms,
-          and mobile views.
+          Em primeiro lugar, temos o Homio, de iamtherufus: um painel do Home
+          Assistant simples e minimalista, baseado em modelos YAML reutilizáveis
+          e cartões Lovelace personalizados. Se já gostam de trabalhar com o
+          ecossistema Lovelace nativo do Home Assistant e com YAML, este é um
+          excelente ponto de partida. Usa os modelos button-card, layout-card e
+          slider para criar cabeçalhos de divisão simples, com temperatura e
+          humidade em tempo real e indicadores de movimento. Como usa ficheiros
+          YAML modulares, definem o modelo de cartão para uma divisão uma única
+          vez e reutilizam-no na sala, nos quartos e nas vistas para telemóvel.
         </div>
       </section>
 
@@ -304,14 +306,15 @@
           ><span class="slide-number" data-current="4" data-total="6"></span>
         </div>
         <div class="notes">
-          Second is Homie Dashboard by Big-Edge2297 — a ready-made,
-          appliance-like wall-tablet experience with zero Lovelace YAML
-          required. This takes a very different approach: instead of wrestling
-          with Lovelace YAML, you install it via HACS or drop it into your www
-          folder and configure everything in a single config.js file. It’s
-          designed specifically for wall tablets, giving you dedicated,
-          touch-friendly screens for Now Playing, Weather, Solar, Cameras, and
-          Lights, plus nine built-in color themes right out of the box.
+          Em segundo lugar, temos o Homie Dashboard, de Big-Edge2297: uma
+          experiência pronta a usar para tablets de parede, com o aspeto e a
+          simplicidade de um aparelho dedicado, sem precisar de YAML do
+          Lovelace. A abordagem é bastante diferente: em vez de trabalharem com
+          YAML do Lovelace, instalam-no através do HACS ou colocam-no na pasta
+          www e configuram tudo num único ficheiro config.js. Foi concebido
+          especificamente para tablets de parede, com ecrãs próprios e fáceis de
+          usar por toque para multimédia, meteorologia, energia solar, câmaras e
+          luzes, além de nove temas de cores incluídos.
         </div>
       </section>
 
@@ -395,16 +398,19 @@
           ><span class="slide-number" data-current="5" data-total="6"></span>
         </div>
         <div class="notes">
-          And third is Home Assistant Tablet Dashboard by NathanLenias — a
-          single-page static web app that talks directly to Home Assistant’s
-          WebSocket API, with no Lovelace, no framework, and no bundler. If you
-          have an older tablet where heavy web frameworks feel sluggish—or you
-          just love writing plain HTML, CSS, and vanilla JavaScript—this project
-          skips Lovelace and build steps completely. It connects straight to
-          Home Assistant’s WebSocket API from a static web page, and still packs
-          in awesome touches like an interactive vacuum floor plan, live Sonos
-          controls, battery auto-discovery, and a night sleep mode. Pick
-          whichever starting point matches your style, and make it yours.
+          E, em terceiro lugar, temos o Home Assistant Tablet Dashboard, de
+          NathanLenias: uma aplicação web estática de página única que comunica
+          diretamente com a API WebSocket do Home Assistant, sem Lovelace, sem
+          frameworks e sem ferramentas de empacotamento. Se têm um tablet mais
+          antigo, em que os frameworks web pesados funcionam com lentidão — ou
+          simplesmente gostam de escrever HTML, CSS e JavaScript sem bibliotecas
+          adicionais —, este projeto dispensa por completo o Lovelace e os
+          passos de compilação. Liga-se diretamente à API WebSocket do Home
+          Assistant a partir de uma página estática e inclui funcionalidades
+          muito úteis, como uma planta interativa para o aspirador, controlos
+          Sonos em tempo real, deteção automática da bateria e um modo noturno.
+          Escolham o ponto de partida que melhor se adapta ao vosso estilo e
+          personalizem-no.
         </div>
       </section>
 
@@ -449,11 +455,11 @@
           ><span class="slide-number" data-current="6" data-total="6"></span>
         </div>
         <div class="notes">
-          Thank you so much! If you missed any of the repository QR codes
-          earlier, scan this code right here to open the live slide deck on your
-          phone—it has the video and direct links to all three GitHub projects.
-          I’d love to hear what you’ve built for your own household or take any
-          questions!
+          Muito obrigado! Se não conseguiram ler algum dos códigos QR dos
+          repositórios, podem apontar a câmara para este código para abrir a
+          apresentação no vosso telemóvel. Inclui o vídeo e ligações diretas
+          para os três projetos no GitHub. Gostava muito de saber o que
+          construíram para as vossas casas ou de responder às vossas perguntas!
         </div>
       </section>
     </div>
