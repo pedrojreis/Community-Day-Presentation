@@ -1,5 +1,9 @@
 # A Home for Everyone
 
+<p align="center">
+	<img src="community-day-2026.png" alt="Open Home Foundation Community Day 2026" width="220">
+</p>
+
 Six-slide lightning presentation for Open Home Foundation Community Day in Lisbon on 6 November 2026.
 
 View the presentation on [GitHub Pages](https://pedrojreis.github.io/Community-Day-Presentation/).
